@@ -5,10 +5,75 @@ class Admin extends React.Component {
         document.querySelector('.myNavbar').style.display="block";
     }
     render(){
+        const users = this.props.users.map((user, i) => (
+                <tr key={i}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.gender}</td>
+                    <td>{user.role}</td>
+                    <td>{user.address}</td>
+            </tr>
+        ));
+        const videos = this.props.videos.map((video, i) => (
+            <div className="card">
+                <div className="card-body">
+                        <div className="d-flex">
+                            <video src={video.video_url} alt="Video" controls>
+                                <p>Your browser does not support HTML5 video</p>
+                            </video>
+                        </div>
+                        <div>
+                            <span>{video.title}</span><br/>
+                            <small>{video.date}</small>
+                        </div>
+                </div>
+            </div>
+        ))
+        const images = this.props.images.map((image, i) => (
+            
+            <div className="col-md-3">
+                <div className="card">
+                    <div className="card-header">{image.title}</div>
+                    <div className="card-body">
+                        <img src={image.image_url} alt={image.title} width="160"/>
+                    </div>
+                    <div className="card-footer">
+                        <strong>Idah <small>{image.date}</small></strong>
+                    </div>
+                </div>
+            </div>
+        ))
+        const audios = this.props.audios.map((audio, i) => (
+            <div className="card ">
+                <div className="card-body">
+                        <div className="d-flex">
+                            <audio src={audio.audio_url} alt="audio" controls>
+                                <p>Your browser does not support HTML5 audio</p>
+                            </audio>
+                        </div>
+                        <div>
+                            <span>{audio.title}</span><br/>
+                            <small>{audio.date}</small>
+                        </div>
+                </div>
+            </div>
+        ))
+        const articles = this.props.articles.map((article, i) => (
+            <div >
+                
+                <h1>{article.title.split(' ')[0]} <span>{article.title.split(' ')[1]}</span></h1>
+                    <p>
+                        {article.article}
+                     </p>
+                     <p><strong>{article.author}</strong><br/>
+                     <small>{article.date}</small></p>
+                </div>
+        ))
         return(
             <div className="mainDiv">
                 <header>
-                    <nav className="adminHeader text-white">
+                    <nav className="adminHeader text-white fixed-top ">
                <div>
                <strong>MTL</strong>
                 <small>Mziki wetu Tamaduni zetu Ladha zetu</small>
@@ -32,6 +97,7 @@ class Admin extends React.Component {
                                 <li><a className="nav-link" href="#"><i className="fa fa-file"></i>Videos</a></li>
                                 <li><a className="nav-link" href="#"><i className="fa fa-file"></i>Audios</a></li>
                                 <li><a className="nav-link" href="#"><i className="fa fa-file"></i>Images</a></li>
+                                <li><a className="nav-link" href="#"><i className="fa fa-file"></i>Articles</a></li>
 
                             </ul>
                     </div>
@@ -75,62 +141,7 @@ class Admin extends React.Component {
                                 <th>Address</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr>
-                                <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr><tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr><tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                </tr>
-                            </tbody>
+                           <tbody>{users}</tbody> 
                         </table>
                         <nav>
                             <ul className="pagination justify-content-center">
@@ -160,60 +171,8 @@ class Admin extends React.Component {
                     {/*  THE LATEST FOUR VIDEOS*/}
                     <div className="col-md-8">
                         <h4>Latest Videos</h4>
-                        <div className="d-flex justify-content-between">
-                        <div className="card">
-                            <div className="card-body">
-                                 <div className="d-flex">
-                                     <video src="" alt="Video" controls>
-                                         <p>Your browser does not support HTML5 video</p>
-                                     </video>
-                                 </div>
-                                 <div>
-                                     <span>Title</span><br/>
-                                     <small>01/12/2019</small>
-                                 </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body">
-                                 <div className="d-flex">
-                                     <video src="" alt="Video" controls>
-                                         <p>Your browser does not support HTML5 video</p>
-                                     </video>
-                                 </div>
-                                 <div>
-                                     <span>Title</span><br/>
-                                     <small>01/12/2019</small>
-                                 </div>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                        <div className="card">
-                            <div className="card-body">
-                                 <div className="d-flex">
-                                     <video src="" alt="Video" controls>
-                                         <p>Your browser does not support HTML5 video</p>
-                                     </video>
-                                 </div>
-                                 <div>
-                                     <span>Title</span><br/>
-                                     <small>01/12/2019</small>
-                                 </div>
-                            </div>
-                        </div><div className="card">
-                            <div className="card-body">
-                                 <div className="d-flex">
-                                     <video src="" alt="Video" controls>
-                                         <p>Your browser does not support HTML5 video</p>
-                                     </video>
-                                 </div>
-                                 <div>
-                                     <span>Title</span><br/>
-                                     <small>01/12/2019</small>
-                                 </div>
-                            </div>
-                        </div>
+                        <div className="grid">
+                        {videos}
                         </div>
                         <nav>
                             <ul className="pagination justify-content-center">
@@ -239,7 +198,7 @@ class Admin extends React.Component {
 
                     {/* START OF VIDEO SELECTION INPUT AND ITS PREVIEW */}
                     <div className="col-md-4">
-                        <h4>Preview</h4>
+                        <h4>Video Preview</h4>
                     <div className="card">
                             <div className="card-header">
                                 <i className="fa fa-plus fa-2x btn btn-primary" title="Select a video"></i>
@@ -248,6 +207,38 @@ class Admin extends React.Component {
                         </div>
                         </div>  
                 </div>
+                {/* THIRD PORTION */}
+                <div className="row">
+                    <div className="third-portion text-center">
+                         {articles}
+                         </div>
+               
+                </div>
+                {/* END OF THIRD PORTION */}
+                {/* FORTH PORTION */}
+                <div className="row">
+                    <div className="container forth-portion d-flex align-items-center">
+                        {images}
+                    </div>
+                </div>
+                {/* END OF FORTH PORTION */}
+
+                {/* FIFTH PORTION */}
+                <div className="row">
+                    <div className="jumbotron text-center">
+                    {audios}
+                    </div>
+                </div>
+                {/* END OF FIFTH PORTION */}
+
+                {/* FOOTER */}
+                <footer>
+                    <nav className="navbar navbar-expand-lg text-center bg-dark text-white" >
+                    <p>Your browser does not support HTML5 audio</p>
+
+                    </nav>
+                </footer>
+                {/* END FOOTER */}
             </div>  
         )
     }
