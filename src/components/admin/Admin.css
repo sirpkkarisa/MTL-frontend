@@ -52,6 +52,16 @@ h1 span {
     flex-wrap: wrap;
     
 }
+.videos {
+    width: 100%;
+}
 video {
     width: 350px;
+    height: 13em;
 }
+.myPrev {
+    width: 100%;
+}
+/* audio {
+    width: 350px;
+} */

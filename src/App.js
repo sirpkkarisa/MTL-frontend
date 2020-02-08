@@ -19,98 +19,102 @@ import img4 from './images/art4.jpg';
 //audio
 import aud1 from './audios/Susumila_Ft_Mbosso_-_Sonona_(Official_Video)(720p).mp3'
 class App extends React.Component{
-    users = [
-        {
-            id: 1,
-            name: 'John Doe',
-            email: 'jd@yahoo.com',
-            gender: 'male',
-            role: 'admin',
-            address: 'Nairobi'
-        }, {
-            id: 2,
-            name: 'Jane Doe',
-            email: 'jane@yahoo.com',
-            gender: 'female',
-            role: 'artist',
-            address: 'Nyahururu'
-        } ,{
-            id: 3,
-            name: 'Pascal K.',
-            email: 'pk@gmail.com',
-            gender: 'male',
-            role: 'admin',
-            address: 'Nakuru'
-        }, {
-            id: 4,
-            name: 'Kazungu Karisa',
-            email: 'kk@gamil.com',
-            gender: 'male',
-            role: 'artist',
-            address: 'Nairobi'
-        }, {
-            id: 5,
-            name: 'Esther G.',
-            email: 'jd@yahoo.com',
-            gender: 'female',
-            role: 'admin',
-            address: 'Mombasa'
-        } ,{
-            id: 6,
-            name: 'Ian Oburu',
-            email: 'ian@hotmail.com',
-            gender: 'male',
-            role: 'artist',
-            address: 'Nairobi'
-        }, {
-            id: 7,
-            name: 'Ruth C',
-            email: 'ruth@yahoo.com',
-            gender: 'female',
-            role: 'artist',
-            address: 'Kericho'
-        }, {
-            id: 8,
-            name: 'Suleiman Juma',
-            email: 'juma@gmail.com',
-            gender: 'male',
-            role: 'artist',
-            address: 'Mombasa'
-        }, {
-            id: 9,
-            name: 'Mike Korir',
-            email: 'korir@yahoo.com',
-            gender: 'male',
-            role: 'artist',
-            address: 'Kericho'
-        },
-    ];
+    state = {
+        users:[
+            // {
+            //     id: 1,
+            //     name: 'John Doe',
+            //     email: 'jd@yahoo.com',
+            //     gender: 'male',
+            //     role: 'admin',
+            //     address: 'Nairobi'
+            // }, {
+            //     id: 2,
+            //     name: 'Jane Doe',
+            //     email: 'jane@yahoo.com',
+            //     gender: 'female',
+            //     role: 'artist',
+            //     address: 'Nyahururu'
+            // } ,{
+            //     id: 3,
+            //     name: 'Pascal K.',
+            //     email: 'pk@gmail.com',
+            //     gender: 'male',
+            //     role: 'admin',
+            //     address: 'Nakuru'
+            // }, {
+            //     id: 4,
+            //     name: 'Kazungu Karisa',
+            //     email: 'kk@gamil.com',
+            //     gender: 'male',
+            //     role: 'artist',
+            //     address: 'Nairobi'
+            // }, {
+            //     id: 5,
+            //     name: 'Esther G.',
+            //     email: 'jd@yahoo.com',
+            //     gender: 'female',
+            //     role: 'admin',
+            //     address: 'Mombasa'
+            // } ,{
+            //     id: 6,
+            //     name: 'Ian Oburu',
+            //     email: 'ian@hotmail.com',
+            //     gender: 'male',
+            //     role: 'artist',
+            //     address: 'Nairobi'
+            // }, {
+            //     id: 7,
+            //     name: 'Ruth C',
+            //     email: 'ruth@yahoo.com',
+            //     gender: 'female',
+            //     role: 'artist',
+            //     address: 'Kericho'
+            // }, {
+            //     id: 8,
+            //     name: 'Suleiman Juma',
+            //     email: 'juma@gmail.com',
+            //     gender: 'male',
+            //     role: 'artist',
+            //     address: 'Mombasa'
+            // }, {
+            //     id: 9,
+            //     name: 'Mike Korir',
+            //     email: 'korir@yahoo.com',
+            //     gender: 'male',
+            //     role: 'artist',
+            //     address: 'Kericho'
+            // },
+        ],
+        videos : [
+            // {
+            //     id:1,
+            //     // video_url: './videos/GIMS_-_Corazon_ft._Lil_Wayne_&_French_Montana_(Clip_Officiel)(720p).mp4',
+            //     video_url: corazon,
+            //     title: 'Corazon',
+            //     date: Date().toLocaleLowerCase(),
+            // },
+            // {
+            //     id:2,
+            //     video_url: Sonona,
+            //     title:'Sonona',
+            //     date: Date().toLocaleLowerCase(),
+            // }, {
+            //     id:3,
+            //     video_url: Unknown,
+            //     title: 'Unknown',
+            //     date: Date().toLocaleLowerCase(),
+            // }, {
+            //     id:4,
+            //     video_url: Vinka,
+            //     title: 'Chips na Ketchup',
+            //     date: Date().toLocaleLowerCase(),
+            // }
+        ]
+    }
+    
 
-    videos = [
-        {
-            id:1,
-            // video_url: './videos/GIMS_-_Corazon_ft._Lil_Wayne_&_French_Montana_(Clip_Officiel)(720p).mp4',
-            video_url: corazon,
-            title: 'Corazon',
-            date: Date().toLocaleLowerCase(),
-        },
-        {
-            id:2,
-            video_url: Sonona,
-            title:'Sonona',
-            date: Date().toLocaleLowerCase(),
-        }, {
-            id:3,
-            video_url: Unknown,
-            title: 'Unknown',
-            date: Date().toLocaleLowerCase(),
-        }, {
-            id:4,
-            video_url: Vinka,
-            title: 'Chips na Ketchup',
-            date: Date().toLocaleLowerCase(),
-        }
-    ]
+    
     images = [
         {
             id:1,
@@ -162,13 +166,45 @@ class App extends React.Component{
             date: Date().toLocaleLowerCase(),
         }
     ];
+    addUser = (firstName, lastName, email, gender, role, address) => {
+        console.log(gender+'\n'+role+'\n'+address)
+        this.setState({
+            users: [...this.state.users,{
+                id: 10,
+                name: firstName,
+                email,
+                gender,
+                role,
+                address
+            }]
+        })
+    }
+    addVideo = (title, video_url) => {
+        this.setState({
+            videos: [...this.state.videos, {
+                id: 5,
+                title,
+                video_url,
+                date: Date()
+            }]
+        })
+    }
    render() {
+       
        return(
     <Router>
         <Route exact path="/" component={Home}/>
         <Route  path="/admin" render ={
             () => (
-            <Admin users={this.users} videos={this.videos} images={this.images} audios={this.audios} articles={this.articles}/>
+            <Admin 
+            users={this.state.users} 
+            videos={this.state.videos} 
+            images={this.images} 
+            audios={this.audios} 
+            articles={this.articles}
+            addUser = {this.addUser}
+            addVideo = {this.addVideo}
+            />
             )
         }/>
     </Router>

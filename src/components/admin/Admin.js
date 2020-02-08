@@ -1,8 +1,61 @@
 import React from "react";
 import './Admin.css'
 class Admin extends React.Component {
-    handleCollapse = (e) => {
-        document.querySelector('.myNavbar').style.display="block";
+    state = {
+        fName:'',
+        lName: '',
+        email: '',
+        role: '',
+        address: '',
+        gender: '',
+        fileurl: ''
+    }
+
+    file= React.createRef()
+    handleOpen = () => {
+        this.file.current.click()
+    }
+    handleUserInput = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const firstName = this.state.fName;
+        const lastName = this.state.lName;
+        const email = this.state.email;
+        const role = this.state.role;
+        const address = this.state.address;
+        const gender = this.state.gender;
+        console.log(role+'\n'+address+'\n'+gender)
+        this.props.addUser(firstName, lastName, email, role, address, gender);
+        this.setState({
+            fName:'',
+            lName: '',
+            email: '',
+            role: '',
+            address: '',
+            gender: ''
+        })
+    }
+    handleVideo = () => {
+        const filename = this.file.current.files[0].name;
+        const fileurl = this.state.fileurl;
+        this.props.addVideo(filename, fileurl);
+    }
+    handleFile = (e) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const audio = new Audio();
+            audio.src = reader.result;
+            audio.className='myPrev';
+            const filename = this.file.current.files[0].name;
+            const fileurl = audio.src;
+            this.setState({fileurl})
+        document.querySelector('.img').innerHTML=`<video src=${audio.src} title=${filename} controls></video>`
+        }
+        reader.readAsDataURL(e.target.files[0])
     }
     render(){
         const users = this.props.users.map((user, i) => (
@@ -16,7 +69,7 @@ class Admin extends React.Component {
             </tr>
         ));
         const videos = this.props.videos.map((video, i) => (
-            <div className="card">
+            <div className="card" key={i}>
                 <div className="card-body">
                         <div className="d-flex">
                             <video src={video.video_url} alt="Video" controls>
@@ -32,7 +85,7 @@ class Admin extends React.Component {
         ))
         const images = this.props.images.map((image, i) => (
             
-            <div className="col-md-3">
+            <div className="col-md-3" key={i}>
                 <div className="card">
                     <div className="card-header">{image.title}</div>
                     <div className="card-body">
@@ -45,7 +98,7 @@ class Admin extends React.Component {
             </div>
         ))
         const audios = this.props.audios.map((audio, i) => (
-            <div className="card ">
+            <div className="card" key={i}>
                 <div className="card-body">
                         <div className="d-flex">
                             <audio src={audio.audio_url} alt="audio" controls>
@@ -60,7 +113,7 @@ class Admin extends React.Component {
             </div>
         ))
         const articles = this.props.articles.map((article, i) => (
-            <div >
+            <div key={i}>
                 
                 <h1>{article.title.split(' ')[0]} <span>{article.title.split(' ')[1]}</span></h1>
                     <p>
@@ -101,32 +154,67 @@ class Admin extends React.Component {
 
                             </ul>
                     </div>
+
+                    {/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    USER FORM
+                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                     */}
                     {/* Create user form */}
                      <div className="col-md-3 col-sm-4">
-                        <form className="ml-3 mt-5">
+                        <form className="ml-3 mt-5" onSubmit={this.handleSubmit}>
                             <div className="form-group">
-                        <input className="form-control" placeholder="First Name"/>
+                        <input className="form-control" placeholder="First Name"
+                        onChange={this.handleUserInput}
+                        name="fName"
+                        value={this.state.fName}
+                        />
                             </div>
                             <div className="form-group">
-                        <input className="form-control" placeholder="First Name"/>
+                        <input className="form-control" placeholder="Last Name"
+                        onChange={this.handleUserInput}
+                        name="lName"
+                        value={this.state.lName}
+                        
+                        />
                             </div>
                             <div className="form-group">
-                        <input className="form-control" placeholder="E-mail"/>
+                        <input className="form-control" placeholder="E-mail"
+                        onChange={this.handleUserInput}
+                        name="email"
+                        value={this.state.email}
+
+                        />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group" name="gender" 
+                        onChange={this.handleUserInput}
+
+                            >
                         <input  placeholder="Gender" name="gender" type="radio" value="male"/>Male
                         <input  placeholder="Gender" type="radio" name="gender" value="female"/>Female
                             </div>
                             <div className="form-group">
-                        <input className="form-control" placeholder="Role"/>
+                        <input className="form-control" placeholder="Role"
+                        onChange={this.handleUserInput}
+                        name="role"
+                        value={this.state.role}
+
+                        />
                             </div>
                             <div className="form-group">
-                        <input className="form-control" placeholder="Address"/>
+                        <input className="form-control" placeholder="Address" 
+                        onChange={this.handleUserInput}
+                        value={this.state.address}
+                        name="address"
+                        />
                             </div>
                             <button className="btn btn-primary">Register</button>
                         </form>
                      </div>
                      {/* end of user form */}
+                      {/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    ENDOF USER FORM
+                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                     */}
 
                      {/* list of users */}
                      <div className="col-md-7 col-sm-8">
@@ -201,9 +289,16 @@ class Admin extends React.Component {
                         <h4>Video Preview</h4>
                     <div className="card">
                             <div className="card-header">
-                                <i className="fa fa-plus fa-2x btn btn-primary" title="Select a video"></i>
+                            <div className="form-group">
+                        <input className="form-control" placeholder="First Name" type="file" hidden
+                        onChange={this.handleFile}
+                        ref={this.file}
+                        />
                             </div>
-                            <div className="card-body" style={{height: "250px"}}></div>
+                                <i className="fa fa-plus fa-2x btn btn-primary" title="Select a video" onClick={this.handleOpen}></i>
+                            </div>
+                            <div className="card-body img" style={{height: "250px"}}></div>
+                            <div className="card-footer"><button type="button" onClick={this.handleVideo}>Add</button></div>
                         </div>
                         </div>  
                 </div>
