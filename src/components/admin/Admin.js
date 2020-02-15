@@ -1,4 +1,5 @@
 import React from "react";
+import { Modal, Button, Carousel } from 'react-bootstrap';
 import './Admin.css'
 class Admin extends React.Component {
     state = {
@@ -8,10 +9,31 @@ class Admin extends React.Component {
         role: '',
         address: '',
         gender: '',
-        fileurl: ''
+        fileurl: '',
+        show: false,
+        articleBody: '',
+        articleTitle: ''
     }
 
     file= React.createRef()
+    handleArticle = () => {
+        const articleTitle = this.state.articleTitle;
+        const articleBody = this.state.articleBody;
+        this.props.addArticle(articleTitle, articleBody);
+        this.setState({ show : false});
+    }
+    handleShow = () => {
+        this.setState({
+            show : true
+        }
+        )
+    }
+    handleClose = () => {
+        this.setState({
+            show : false
+        }
+        )
+    }
     handleOpen = () => {
         this.file.current.click()
     }
@@ -29,7 +51,7 @@ class Admin extends React.Component {
         const address = this.state.address;
         const gender = this.state.gender;
         console.log(role+'\n'+address+'\n'+gender)
-        this.props.addUser(firstName, lastName, email, role, address, gender);
+        this.props.addUser(firstName, lastName, email, gender, role, address);
         this.setState({
             fName:'',
             lName: '',
@@ -40,9 +62,33 @@ class Admin extends React.Component {
         })
     }
     handleVideo = () => {
+        // console.log(this.file)
         const filename = this.file.current.files[0].name;
         const fileurl = this.state.fileurl;
-        this.props.addVideo(filename, fileurl);
+        this.props.addVideo(this.file.current.files[0]);
+    }
+    handleImageSave = () => {
+        if (! this.state.fileurl || !this.file.current.files[0].name) {
+            return;
+        }
+        const filename = this.file.current.files[0].name;
+        const fileurl = this.state.fileurl;
+        
+        this.props.addImage(filename, fileurl);
+        document.querySelector('.forth-portion img').style.display="none"
+    }
+    handleImage = (e) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.src = reader.result;
+            img.className='imagePrev';
+            const filename = this.file.current.files[0].name;
+            const fileurl = img.src;
+            this.setState({fileurl})
+        document.querySelector('.forth-portion').innerHTML=`<img src=${img.src} title=${filename} />`
+        }
+        reader.readAsDataURL(e.target.files[0])
     }
     handleFile = (e) => {
         const reader = new FileReader();
@@ -60,8 +106,8 @@ class Admin extends React.Component {
     render(){
         const users = this.props.users.map((user, i) => (
                 <tr key={i}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
+                    <td>{i+1}</td>
+                    <td>{user.first_name}</td>
                     <td>{user.email}</td>
                     <td>{user.gender}</td>
                     <td>{user.role}</td>
@@ -84,18 +130,17 @@ class Admin extends React.Component {
             </div>
         ))
         const images = this.props.images.map((image, i) => (
-            
-            <div className="col-md-3" key={i}>
-                <div className="card">
-                    <div className="card-header">{image.title}</div>
-                    <div className="card-body">
-                        <img src={image.image_url} alt={image.title} width="160"/>
-                    </div>
-                    <div className="card-footer">
-                        <strong>Idah <small>{image.date}</small></strong>
-                    </div>
-                </div>
-            </div>
+            <Carousel.Item>
+              <img
+                className="d-flex"
+                src={image.image_url}
+                alt="First slide"
+              />
+              <Carousel.Caption>
+                <h3>First slide label</h3>
+                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              </Carousel.Caption>
+            </Carousel.Item>
         ))
         const audios = this.props.audios.map((audio, i) => (
             <div className="card" key={i}>
@@ -115,12 +160,12 @@ class Admin extends React.Component {
         const articles = this.props.articles.map((article, i) => (
             <div key={i}>
                 
-                <h1>{article.title.split(' ')[0]} <span>{article.title.split(' ')[1]}</span></h1>
+                <h1>{article.article_title.split(' ')[0]} <span>{article.article_title.split(' ')[1]}</span></h1>
                     <p>
                         {article.article}
                      </p>
-                     <p><strong>{article.author}</strong><br/>
-                     <small>{article.date}</small></p>
+                     <p><strong>{article.user_role}</strong><br/>
+                     <small>{article.created_on}</small></p>
                 </div>
         ))
         return(
@@ -305,16 +350,54 @@ class Admin extends React.Component {
                 {/* THIRD PORTION */}
                 <div className="row">
                     <div className="third-portion text-center">
-                         {articles}
+                    <Button variant="primary" onClick={this.handleShow}>
+                        Add Article
+                    </Button>
+
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Create Article</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form>
+                                <div className="form-group">
+                                    <input className="form-control" placeholder="Article Title" name="articleTitle" onChange={this.handleUserInput}/>
+                                </div>
+                                <div className="form-group ">
+                                    <textarea className="form-control" placeholder="Enter Article..." name="articleBody"  onChange={this.handleUserInput}></textarea>
+                                </div>
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={this.handleArticle}>
+                           Add
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+                            {articles}
                          </div>
                
                 </div>
                 {/* END OF THIRD PORTION */}
                 {/* FORTH PORTION */}
                 <div className="row">
-                    <div className="container forth-portion d-flex align-items-center">
-                        {images}
+                    <div className="container forth-portion d-flex justify-content-center align-items-center">
+                <Carousel>
+                    {images}
+                    </Carousel>  
                     </div>
+                    {/* <input className="form-control" placeholder="First Name" type="file" hidden
+                        onChange={this.handleImage}
+                        ref={this.file}/> */}
+                    <Button variant="primary"  onClick={this.handleOpen}>
+                        Select Image
+                    </Button>
+                    <Button variant="primary"  onClick={this.handleImageSave}>
+                        Save Image
+                    </Button>
                 </div>
                 {/* END OF FORTH PORTION */}
 

@@ -29,7 +29,7 @@ video {
     padding: 25px;
     font-size: smaller;
     border: none;
-
+    width: 100%;
 }
 h1 span {
     color: darkturquoise;
@@ -41,6 +41,10 @@ h1 span {
     background-position: center;
     background-repeat: no-repeat;
     box-shadow: 5px 7px 20px #999;
+}
+.forth-portion .carousel-item img{
+    width: 300px;
+    height: 300px;
 }
 .jumbotron {
     width: 80vw;
@@ -61,6 +65,13 @@ video {
 }
 .myPrev {
     width: 100%;
+}
+img {
+    width: 50%;
+    
+}
+.row button {
+    margin-left: 101px;
 }
 /* audio {
     width: 350px;
