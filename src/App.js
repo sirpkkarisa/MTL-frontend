@@ -22,6 +22,7 @@ class App extends React.Component{
         }]
     }
     componentDidMount() {
+        //GET ALL USERS
         axios.get('http://localhost:7002/auth/users')
             .then(
                 (res) => {
@@ -35,6 +36,7 @@ class App extends React.Component{
                     console.log(error)
                 }
             )
+            //GET ALL VIDEOS
             axios.get('http://localhost:7002/videos')
             .then(
                 (res) => {
@@ -48,11 +50,26 @@ class App extends React.Component{
                     console.log(error)
                 }
             )
+            //GET ALL ARTICLES
             axios.get('http://localhost:7002/articles')
             .then(
                 (res) => {
                     this.setState({
                         articles: res.data.data
+                    })
+                }
+            )
+            .catch(
+                (error) => {
+                    console.log(error)
+                }
+            )
+            // GET ALL IMAGES
+            axios.get('http://localhost:7002/images')
+            .then(
+                (res) => {
+                    this.setState({
+                        images: res.data.data
                     })
                 }
             )
@@ -86,16 +103,6 @@ class App extends React.Component{
         .then(
             (res) => {
                  console.log(res.data)
-                // this.setState({
-                //     users: [...this.state.users,{
-                //         firstName,
-                //         lastName,
-                //         email,
-                //         gender,
-                //         role,
-                //         address
-                //     }]
-                // })
             }
         )
         .catch(
@@ -103,21 +110,11 @@ class App extends React.Component{
                 console.log(error)
             }
         )
-        // console.log(gender+'\n'+role+'\n'+address)
-        // this.setState({
-        //     users: [...this.state.users,{
-        //         id: 10,
-        //         name: firstName,
-        //         email,
-        //         gender,
-        //         role,
-        //         address
-        //     }]
-        // })
     }
     addVideo = (file) => {
         const fd = new FormData();
-        // fd.append('videoTitle',title);
+        fd.append('videoTitle',file.name);
+        fd.append('authorId','b8b8fe94-1bdd-4f99-90fa-7012940b1d8c');
         fd.append('userRole','admin');
         fd.append('video',file, file.name);
 
@@ -127,29 +124,38 @@ class App extends React.Component{
             }
         })
         .then(
-            (res)=> console.log(res)
+            (res)=> {
+                this.setState({
+                    videos:  [...this.state.videos, res.data.data.video[0]]
+                })
+            }
         )
         .catch(
             (error) => console.log(error)
         )
-        // this.setState({
-        //     videos: [...this.state.videos, {
-        //         id: 5,
-        //         title,
-        //         video_url,
-        //         date: Date()
-        //     }]
-        // })
     }
-    addImage = (title, image_url) => {
-        this.setState({
-            images: [...this.state.images, {
-                id: 5,
-                title,
-                image_url,
-                date: Date()
-            }]
+    addImage = (image) => {
+        const fd = new FormData();
+        fd.append('userRole','admin');
+        fd.append('authorId','b8b8fe94-1bdd-4f99-90fa-7012940b1d8c');
+        fd.append('imageTitle',image.name);
+        fd.append('image',image, image.name);
+        document.querySelector('.forth-portion img').style.display="flex"
+        axios.post('http://localhost:7002/images', fd, {
+            onUploadProgress: e => {
+                console.log(`Completed: ${Math.round(e.loaded/e.total * 100)}%`)
+            }
         })
+        .then(
+            (res)=> {
+                this.setState({
+                    images:  [...this.state.images, res.data.data.image[0]]
+                })
+            }
+        )
+        .catch(
+            (error) => console.log(error)
+        )
     }
     addArticle = (title, article) => {
         axios.post('http://localhost:7002/articles',{
@@ -168,9 +174,6 @@ class App extends React.Component{
         .catch(
             (error) => console.log(error)
         )
-        // this.setState({
-        //     articles: [...this.state.articles, {id:1,title,article, author: 'John Doe'}]
-        // })
     }
    render() {
        return(
@@ -179,11 +182,11 @@ class App extends React.Component{
         <Route  path="/admin" render ={
             () => (
             <Admin 
-            users={this.state.users} 
-            videos={this.state.videos} 
-            images={this.state.images} 
-            audios={this.audios} 
-            articles={this.state.articles}
+            users = {this.state.users} 
+            videos = {this.state.videos} 
+            images = {this.state.images} 
+            audios = {this.audios} 
+            articles = {this.state.articles}
             addUser = {this.addUser}
             addVideo = {this.addVideo}
             addArticle = {this.addArticle}

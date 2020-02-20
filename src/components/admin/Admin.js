@@ -12,10 +12,12 @@ class Admin extends React.Component {
         fileurl: '',
         show: false,
         articleBody: '',
-        articleTitle: ''
+        articleTitle: '',
+        imgUrl: ''
     }
 
-    file= React.createRef()
+    file= React.createRef();
+    img = React.createRef();
     handleArticle = () => {
         const articleTitle = this.state.articleTitle;
         const articleBody = this.state.articleBody;
@@ -37,6 +39,9 @@ class Admin extends React.Component {
     handleOpen = () => {
         this.file.current.click()
     }
+    handleImageOpen = () => {
+        this.img.current.click();
+    }
     handleUserInput = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -50,7 +55,6 @@ class Admin extends React.Component {
         const role = this.state.role;
         const address = this.state.address;
         const gender = this.state.gender;
-        console.log(role+'\n'+address+'\n'+gender)
         this.props.addUser(firstName, lastName, email, gender, role, address);
         this.setState({
             fName:'',
@@ -62,19 +66,10 @@ class Admin extends React.Component {
         })
     }
     handleVideo = () => {
-        // console.log(this.file)
-        const filename = this.file.current.files[0].name;
-        const fileurl = this.state.fileurl;
         this.props.addVideo(this.file.current.files[0]);
     }
     handleImageSave = () => {
-        if (! this.state.fileurl || !this.file.current.files[0].name) {
-            return;
-        }
-        const filename = this.file.current.files[0].name;
-        const fileurl = this.state.fileurl;
-        
-        this.props.addImage(filename, fileurl);
+        this.props.addImage(this.img.current.files[0]);
         document.querySelector('.forth-portion img').style.display="none"
     }
     handleImage = (e) => {
@@ -83,9 +78,9 @@ class Admin extends React.Component {
             const img = new Image();
             img.src = reader.result;
             img.className='imagePrev';
-            const filename = this.file.current.files[0].name;
-            const fileurl = img.src;
-            this.setState({fileurl})
+            const filename = this.img.current.files[0].name;
+            const imgUrl = img.src;
+            this.setState({imgUrl})
         document.querySelector('.forth-portion').innerHTML=`<img src=${img.src} title=${filename} />`
         }
         reader.readAsDataURL(e.target.files[0])
@@ -130,15 +125,15 @@ class Admin extends React.Component {
             </div>
         ))
         const images = this.props.images.map((image, i) => (
-            <Carousel.Item>
+            <Carousel.Item key={i}>
               <img
                 className="d-flex"
                 src={image.image_url}
-                alt="First slide"
+                alt={image.image_title}
               />
-              <Carousel.Caption>
-                <h3>First slide label</h3>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              <Carousel.Caption style={{color:'#444'}}>
+                 <h3>{image.image_title}</h3>
+                <p>{image.created_on}</p>
               </Carousel.Caption>
             </Carousel.Item>
         ))
@@ -389,10 +384,10 @@ class Admin extends React.Component {
                     {images}
                     </Carousel>  
                     </div>
-                    {/* <input className="form-control" placeholder="First Name" type="file" hidden
+                    <input className="form-control" placeholder="First Name" type="file" hidden
                         onChange={this.handleImage}
-                        ref={this.file}/> */}
-                    <Button variant="primary"  onClick={this.handleOpen}>
+                        ref={this.img}/>
+                    <Button variant="primary"  onClick={this.handleImageOpen}>
                         Select Image
                     </Button>
                     <Button variant="primary"  onClick={this.handleImageSave}>
