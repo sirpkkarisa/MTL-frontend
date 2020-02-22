@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from 'axios';
 import Home from './components/home/Home';
 import Admin from './components/admin/Admin';
+import User from './components/users/User';
 
 //images
 import img3 from './images/art3.jpg';
 
 //audio
 import aud1 from './audios/Susumila_Ft_Mbosso_-_Sonona_(Official_Video)(720p).mp3'
+import ResetPassword from "./components/users/password/ResetPassword";
 class App extends React.Component{
     state = {
         users:[],
@@ -192,6 +194,16 @@ class App extends React.Component{
             addArticle = {this.addArticle}
             addImage = {this.addImage}
             />
+            )
+        }/> 
+        <Route path = "/users" render = {
+            () => (
+                <User />
+            )
+        }/>
+        <Route path = "/reset-password" render = {
+            () => (
+               <ResetPassword/>
             )
         }/>
     </Router>

@@ -247,7 +247,8 @@ class Admin extends React.Component {
                         name="address"
                         />
                             </div>
-                            <button className="btn btn-primary">Register</button>
+                            {/* <button className="btn btn-primary">Register</button> */}
+                            <input className="btn btn-outline-primary btn-block" value="Register"/>
                         </form>
                      </div>
                      {/* end of user form */}
